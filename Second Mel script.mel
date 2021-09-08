@@ -1,0 +1,52 @@
+string $objects[];
+
+string $temp[];
+
+$temp = `polySphere -radius 4 -subdivisionsX 16 -subdivisionsY 16 -axis 0 1 0 -cuv 2 -ch 1`;
+stringArrayInsertAtIndex(0, $objects, $temp[0]);
+move -r -os -wd 0 4 0;
+
+$temp = `polySphere -radius 3.2 -subdivisionsX 16 -subdivisionsY 16 -axis 0 1 0 -cuv 2 -ch 1`;
+stringArrayInsertAtIndex(0, $objects, $temp[0]);
+move -r -os -wd 0 10.4 0;
+
+$temp = `polySphere -radius 2.5 -subdivisionsX 16 -subdivisionsY 16 -axis 0 1 0 -cuv 2 -ch 1`;
+stringArrayInsertAtIndex(0, $objects, $temp[0]);
+move -r -os -wd 0 15.7 0;
+
+$temp = `polyCylinder -radius 1.4 -height 3.5 -subdivisionsX 16 -subdivisionsY 1 -subdivisionsZ 1 -axis 0 1 0 -rcp 0 -cuv 3 -ch 1`;
+stringArrayInsertAtIndex(0, $objects, $temp[0]);
+move -r -os -wd 0 19.2 0 ;
+
+$temp = `polyCylinder -radius 2 -height 1 -subdivisionsX 16 -subdivisionsY 1 -subdivisionsZ 1 -axis 0 1 0 -rcp 0 -cuv 3 -ch 1`;
+stringArrayInsertAtIndex(0, $objects, $temp[0]);
+move -r -os -wd 0 18.2 0 ;
+
+$temp = `polyCone -r 0.5 -h 2 -sx 20 -sy 1 -sz 0 -ax 0 1 0 -rcp 0 -cuv 3 -ch 1`;
+stringArrayInsertAtIndex(0, $objects, $temp[0]);
+move -relative -objectSpace -worldSpaceDistance 0 15.5 3 ;
+rotate -r -os -fo 90 0 0 ;
+
+$temp = `polyCube -w 8 -h 0.8 -d 0.8 -sx 10 -sy 1 -sz 1 -ax 0 1 0 -cuv 4 -ch 1`;
+stringArrayInsertAtIndex(0, $objects, $temp[0]);
+move -relative -objectSpace -worldSpaceDistance 4 12 0 ;
+
+
+polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 1 -pvx 3.599999785 -pvy 0.400000006 -pvz 0 -divisions 1 -twist 0 -taper 1 -off 0 -thickness 0 -smoothingAngle 30 ($objects[0] + ".f[19]");
+setAttr "polyExtrudeFace1.localTranslate" -type double3 0 0 0.8 ;
+
+polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 1 -pvx 3.999999762 -pvy 0 -pvz 0 -divisions 1 -twist 0 -taper 1 -off 0 -thickness 0 -smoothingAngle 30 ($objects[0] + ".f[40]");
+setAttr "polyExtrudeFace2.localTranslate" -type double3 0 0 0.8 ;
+
+polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 1 -pvx 3.999999762 -pvy 0 -pvz 0 -divisions 1 -twist 0 -taper 1 -off 0 -thickness 0 -smoothingAngle 30 ($objects[0] + ".f[39]");
+setAttr "polyExtrudeFace3.localTranslate" -type double3 0 0 0.8 ;
+
+$temp = `polyMirrorFace  -cutMesh 1 -axis 0 -axisDirection 1 -mergeMode 1 -mergeThresholdType 0 -mergeThreshold 0.001 -mirrorAxis 2 -mirrorPosition 0 -smoothingAngle 30 -flipUVs 0 -ch 1 ($objects[0])`;
+stringArrayInsertAtIndex(0, $objects, $temp[0]);
+
+$temp = `polyUnite -ch 1 -mergeUVSets 1 -centerPivot -name $objects[0] $objects[1] $objects[2] $objects[3] $objects[4] $objects[5] $objects[6] $objects[7]`;
+makeIdentity -apply true -translate 1 -rotate 1 -scale 1 -normal 0 -preserveNormals 1;
+rename $temp[0] "Snowman";
+delete -constructionHistory;
+
+group -n SnowmanGeo Snowman;
